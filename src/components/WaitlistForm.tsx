@@ -27,12 +27,12 @@ export const WaitlistForm = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md mx-auto">
       <div className="glass-panel p-6 space-y-4">
-        <h2 className="text-xl font-bold text-center mb-4">
-          Be the first to crack the code
-        </h2>
-        <p className="text-sm text-center text-gray-400 mb-6">
-          Join the waitlist for exclusive access to projects, tutorials, and a community of like-minded builders.
-        </p>
+</lov-replace>
+<lov-search>
+            placeholder="Enter your email"
+</lov-search>
+<lov-replace>
+            placeholder="enter your email"
         <div className="flex space-x-2">
           <Input
             type="email"
@@ -47,7 +47,7 @@ export const WaitlistForm = () => {
             disabled={isSubmitting}
             className="bg-neon-blue hover:bg-neon-blue/80 text-black font-bold transition-all duration-300 hover:scale-105"
           >
-            {isSubmitting ? "Joining..." : "Let's Build"}
+            {isSubmitting ? "joining..." : "let's build"}
           </Button>
         </div>
       </div>
