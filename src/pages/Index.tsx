@@ -13,23 +13,25 @@ const Index = () => {
       />
 
       {/* Content */}
-      <main className="container mx-auto flex flex-col items-center justify-center space-y-12 z-10">
+      <main className="container mx-auto flex flex-col items-center justify-center space-y-8 md:space-y-12 z-10">
         {/* Header */}
-        <header className="text-center space-y-4">
-          <h1 className="text-4xl md:text-6xl font-mono font-bold neon-text animate-flicker">
+        <header className="text-center space-y-4 w-full px-4">
+          <h1 className="text-3xl md:text-6xl font-mono font-bold neon-text animate-flicker">
             cracked engineers club
           </h1>
         </header>
 
         {/* Brain visualization */}
-        <Brain />
+        <div className="w-full max-w-[90vw] md:max-w-[600px]">
+          <Brain />
+        </div>
 
         {/* Waitlist form */}
         <WaitlistForm />
 
         {/* Footer */}
-        <footer className="text-center text-gray-400 mt-12">
-          <p className="animate-pulse font-mono">
+        <footer className="text-center text-gray-400 mt-8 md:mt-12">
+          <p className="animate-pulse font-mono text-sm md:text-base">
             humans doing cool shit
           </p>
         </footer>
