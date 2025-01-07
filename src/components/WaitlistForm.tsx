@@ -27,16 +27,10 @@ export const WaitlistForm = () => {
   return (
     <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md mx-auto">
       <div className="glass-panel p-6 space-y-4">
-</lov-replace>
-<lov-search>
-            placeholder="Enter your email"
-</lov-search>
-<lov-replace>
-            placeholder="enter your email"
         <div className="flex space-x-2">
           <Input
             type="email"
-            placeholder="Enter your email"
+            placeholder="enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className="flex-1 bg-black/50 border-white/10"
