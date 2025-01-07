@@ -37,7 +37,7 @@ export const Brain = () => {
     directionalLight.position.set(1, 1, 1);
     sceneRef.current.add(ambientLight, directionalLight);
 
-    // Brain mesh (using a sphere as placeholder - you can replace with a detailed brain model)
+    // Brain mesh (using a sphere as placeholder)
     const geometry = new THREE.SphereGeometry(2, 32, 32);
     const material = new THREE.MeshPhongMaterial({
       color: 0x808080,
@@ -47,6 +47,20 @@ export const Brain = () => {
     });
     brainRef.current = new THREE.Mesh(geometry, material);
     sceneRef.current.add(brainRef.current);
+
+    // Handle resize
+    const handleResize = () => {
+      if (!containerRef.current || !rendererRef.current || !cameraRef.current) return;
+      
+      const width = containerRef.current.clientWidth;
+      const height = containerRef.current.clientHeight;
+      
+      rendererRef.current.setSize(width, height);
+      cameraRef.current.aspect = width / height;
+      cameraRef.current.updateProjectionMatrix();
+    };
+
+    window.addEventListener('resize', handleResize);
 
     // Animation
     const animate = () => {
@@ -60,6 +74,7 @@ export const Brain = () => {
 
     // Cleanup
     return () => {
+      window.removeEventListener('resize', handleResize);
       if (rendererRef.current && containerRef.current) {
         containerRef.current.removeChild(rendererRef.current.domElement);
       }
@@ -69,7 +84,7 @@ export const Brain = () => {
   return (
     <div 
       ref={containerRef} 
-      className="brain-container w-full h-[400px] mb-8"
+      className="brain-container w-full h-[300px] md:h-[400px] flex items-center justify-center"
     />
   );
 };
