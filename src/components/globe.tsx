@@ -1,7 +1,7 @@
-import { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
 
-export const Brain = () => {
+export const Globe = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
@@ -11,9 +11,11 @@ export const Brain = () => {
   useEffect(() => {
     if (!containerRef.current) return;
 
+    const container = containerRef.current;
+
     // Scene setup
     sceneRef.current = new THREE.Scene();
-    
+
     // Camera setup
     cameraRef.current = new THREE.PerspectiveCamera(
       75,
@@ -50,22 +52,29 @@ export const Brain = () => {
 
     // Handle resize
     const handleResize = () => {
-      if (!containerRef.current || !rendererRef.current || !cameraRef.current) return;
-      
+      if (!containerRef.current || !rendererRef.current || !cameraRef.current)
+        return;
+
       const width = containerRef.current.clientWidth;
       const height = containerRef.current.clientHeight;
-      
+
       rendererRef.current.setSize(width, height);
       cameraRef.current.aspect = width / height;
       cameraRef.current.updateProjectionMatrix();
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Animation
     const animate = () => {
-      if (!brainRef.current || !rendererRef.current || !sceneRef.current || !cameraRef.current) return;
-      
+      if (
+        !brainRef.current ||
+        !rendererRef.current ||
+        !sceneRef.current ||
+        !cameraRef.current
+      )
+        return;
+
       requestAnimationFrame(animate);
       brainRef.current.rotation.y += 0.005;
       rendererRef.current.render(sceneRef.current, cameraRef.current);
@@ -74,16 +83,16 @@ export const Brain = () => {
 
     // Cleanup
     return () => {
-      window.removeEventListener('resize', handleResize);
-      if (rendererRef.current && containerRef.current) {
-        containerRef.current.removeChild(rendererRef.current.domElement);
+      window.removeEventListener("resize", handleResize);
+      if (rendererRef.current && container) {
+        container.removeChild(rendererRef.current.domElement);
       }
     };
   }, []);
 
   return (
-    <div 
-      ref={containerRef} 
+    <div
+      ref={containerRef}
       className="brain-container w-full h-[300px] md:h-[400px] flex items-center justify-center"
     />
   );
