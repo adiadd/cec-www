@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -372,7 +374,7 @@ export function JoinDialog() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-foreground font-bold">
-                    what's your skill level?
+                    what&apos;s your skill level?
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}

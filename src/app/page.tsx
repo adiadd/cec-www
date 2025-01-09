@@ -1,7 +1,7 @@
 import { Globe } from "@/components/globe";
 import { JoinDialog } from "@/components/join-dialog";
 
-const Index = () => {
+export default function Home() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Background pattern */}
@@ -38,6 +38,4 @@ const Index = () => {
       </main>
     </div>
   );
-};
-
-export default Index;
+}
