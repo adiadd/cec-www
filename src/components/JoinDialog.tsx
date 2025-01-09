@@ -389,4 +389,4 @@ export function JoinDialog() {
       </DialogContent>
     </Dialog>
   );
-});
+}
