@@ -1,5 +1,5 @@
 import { Brain } from "@/components/Brain";
-import { WaitlistForm } from "@/components/WaitlistForm";
+import { JoinDialog } from "@/components/JoinDialog";
 
 const Index = () => {
   return (
@@ -26,8 +26,8 @@ const Index = () => {
           <Brain />
         </div>
 
-        {/* Waitlist form */}
-        <WaitlistForm />
+        {/* Join Dialog */}
+        <JoinDialog />
 
         {/* Footer */}
         <footer className="text-center text-gray-400 mt-8 md:mt-12">
