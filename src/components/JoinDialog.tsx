@@ -229,9 +229,10 @@ export function JoinDialog() {
                                           )
                                         )
                                   }}
+                                  className="border-primary data-[state=checked]:border-primary"
                                 />
                               </FormControl>
-                              <FormLabel className="font-normal">
+                              <FormLabel className="font-normal text-foreground">
                                 {reason.label}
                               </FormLabel>
                             </FormItem>
@@ -240,7 +241,7 @@ export function JoinDialog() {
                       />
                     ))}
                   </div>
-                  <FormMessage />
+                  <FormMessage className="text-destructive" />
                 </FormItem>
               )}
             />
@@ -278,9 +279,10 @@ export function JoinDialog() {
                                           )
                                         )
                                   }}
+                                  className="border-primary data-[state=checked]:border-primary"
                                 />
                               </FormControl>
-                              <FormLabel className="font-normal">
+                              <FormLabel className="font-normal text-foreground">
                                 {interest.label}
                               </FormLabel>
                             </FormItem>
@@ -289,7 +291,7 @@ export function JoinDialog() {
                       />
                     ))}
                   </div>
-                  <FormMessage />
+                  <FormMessage className="text-destructive" />
                 </FormItem>
               )}
             />
