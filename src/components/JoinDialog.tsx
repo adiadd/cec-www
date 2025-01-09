@@ -66,8 +66,20 @@ const discoveryOptions = [
 
 const formSchema = z.object({
   email: z.string().email("please enter a valid email"),
-  twitter: z.string().optional(),
-  website: z.string().url("please enter a valid url").optional().or(z.literal("")),
+  twitter: z.string().min(1, "please enter your twitter/x handle"),
+  website: z
+    .string()
+    .transform((val) => {
+      if (!val) return "";
+      // If URL doesn't start with protocol, prepend https://
+      if (!/^https?:\/\//i.test(val)) {
+        return `https://${val}`;
+      }
+      return val;
+    })
+    .pipe(
+      z.string().url("please enter a valid url").optional().or(z.literal(""))
+    ),
   why: z.string().min(1, "please tell us why you want to join"),
   reasons: z.array(z.string()).min(1, "please select at least one reason"),
   interests: z.array(z.string()).min(1, "please select at least one interest").max(3, "please select up to 3 interests"),
@@ -102,6 +114,7 @@ export function JoinDialog() {
   const onSubmit = async (data: FormValues) => {
     console.log("Form data:", data);
     // Here we would typically make an API call
+    // Note that data.website will already be properly formatted with https://
     toast({
       title: "application submitted!",
       description: "we'll be in touch soon.",
@@ -376,4 +389,4 @@ export function JoinDialog() {
       </DialogContent>
     </Dialog>
   );
-}
+});
