@@ -78,7 +78,7 @@ export const Globe = () => {
         return;
 
       requestAnimationFrame(animate);
-      brainRef.current.rotation.y += 0.005;
+      brainRef.current.rotation.y += 0.002;
       rendererRef.current.render(sceneRef.current, cameraRef.current);
     };
     animate();
