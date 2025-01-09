@@ -1,8 +1,5 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
@@ -19,8 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -28,7 +23,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 
 const reasonsOptions = [
   { id: "build", label: "to build cool shit" },
@@ -69,24 +69,43 @@ const formSchema = z.object({
   twitter: z.string().min(1, "please enter your twitter/x handle"),
   website: z
     .string()
-    .transform((val) => {
-      if (!val) return "";
+    .transform((value) => {
+      if (!value) return "";
+      // Clean up the URL by removing whitespace and spaces
+      const cleanedUrl = value.trim().replace(/\s+/g, "");
       // If URL doesn't start with protocol, prepend https://
-      if (!/^https?:\/\//i.test(val)) {
-        return `https://${val}`;
+      if (!/^https?:\/\//i.test(cleanedUrl)) {
+        return `https://${cleanedUrl}`;
       }
-      return val;
+      return cleanedUrl;
     })
     .pipe(
-      z.string().url("please enter a valid url").optional().or(z.literal(""))
+      z
+        .string()
+        .url("please enter a valid url")
+        .refine((url) => {
+          try {
+            const parsed = new URL(url);
+            return parsed.hostname.includes(".");
+          } catch {
+            return false;
+          }
+        }, "please enter a valid domain")
+        .optional()
+        .or(z.literal(""))
     ),
   why: z.string().min(1, "please tell us why you want to join"),
   reasons: z.array(z.string()).min(1, "please select at least one reason"),
-  interests: z.array(z.string()).min(1, "please select at least one interest").max(3, "please select up to 3 interests"),
+  interests: z
+    .array(z.string())
+    .min(1, "please select at least one interest")
+    .max(3, "please select up to 3 interests"),
   skillLevel: z.string().min(1, "please select your skill level"),
   discovery: z.string().min(1, "please tell us how you found us"),
   discoveryOther: z.string().optional(),
-  expectations: z.string().min(1, "please tell us what you're looking to get out of this community"),
+  expectations: z
+    .string()
+    .min(1, "please tell us what you're looking to get out of this community"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -94,7 +113,7 @@ type FormValues = z.infer<typeof formSchema>;
 export function JoinDialog() {
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
-  
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -112,20 +131,53 @@ export function JoinDialog() {
   });
 
   const onSubmit = async (data: FormValues) => {
-    console.log("Form data:", data);
-    toast({
-      title: "application submitted!",
-      description: "we'll be in touch soon.",
-    });
-    setOpen(false);
-    form.reset();
+    try {
+      // Parse the form data through zod schema again for extra safety
+      const parsedData = formSchema.parse(data);
+
+      // Clean up the data
+      const cleanedData = {
+        ...parsedData,
+        twitter: parsedData.twitter.startsWith("@")
+          ? parsedData.twitter
+          : `@${parsedData.twitter}`,
+        website: parsedData.website || null, // Convert empty string to null
+      };
+
+      console.log("Cleaned form data:", cleanedData);
+
+      // TODO: Send data to your API endpoint
+      // const response = await fetch('/api/submit-application', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(cleanedData),
+      // });
+
+      // if (!response.ok) throw new Error('Failed to submit application');
+
+      toast({
+        title: "application submitted!",
+        description: "we'll be in touch soon.",
+        variant: "default",
+      });
+
+      setOpen(false);
+      form.reset();
+    } catch (error) {
+      console.error("Form submission error:", error);
+      toast({
+        title: "submission failed",
+        description: "please try again later.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button 
-          variant="default" 
+        <Button
+          variant="default"
           className="bg-neon-blue hover:bg-neon-blue/80 text-black font-bold transition-all duration-300 hover:scale-105"
         >
           join the club
@@ -133,7 +185,9 @@ export function JoinDialog() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold mb-4">join the cracked engineers club</DialogTitle>
+          <DialogTitle className="text-xl font-bold mb-4">
+            join the cracked engineers club
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -142,7 +196,9 @@ export function JoinDialog() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-foreground font-bold">email</FormLabel>
+                  <FormLabel className="text-foreground font-bold">
+                    email
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="your@email.com" {...field} />
                   </FormControl>
@@ -150,13 +206,15 @@ export function JoinDialog() {
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="twitter"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-foreground font-bold">twitter/x handle</FormLabel>
+                  <FormLabel className="text-foreground font-bold">
+                    twitter/x handle
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="@username" {...field} />
                   </FormControl>
@@ -170,7 +228,9 @@ export function JoinDialog() {
               name="website"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-foreground font-bold">portfolio website (optional)</FormLabel>
+                  <FormLabel className="text-foreground font-bold">
+                    portfolio website (optional)
+                  </FormLabel>
                   <FormControl>
                     <Input placeholder="https://your-site.com" {...field} />
                   </FormControl>
@@ -184,9 +244,11 @@ export function JoinDialog() {
               name="why"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-foreground font-bold">why do you want to be a part of this?</FormLabel>
+                  <FormLabel className="text-foreground font-bold">
+                    why do you want to be a part of this?
+                  </FormLabel>
                   <FormControl>
-                    <Textarea 
+                    <Textarea
                       placeholder="tell us your story..."
                       className="min-h-[100px]"
                       {...field}
@@ -202,7 +264,9 @@ export function JoinDialog() {
               name="reasons"
               render={() => (
                 <FormItem>
-                  <FormLabel className="text-foreground font-bold">why are you here? (check all that apply)</FormLabel>
+                  <FormLabel className="text-foreground font-bold">
+                    why are you here? (check all that apply)
+                  </FormLabel>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     {reasonsOptions.map((reason) => (
                       <FormField
@@ -220,12 +284,15 @@ export function JoinDialog() {
                                   checked={field.value?.includes(reason.id)}
                                   onCheckedChange={(checked) => {
                                     return checked
-                                      ? field.onChange([...field.value, reason.id])
+                                      ? field.onChange([
+                                          ...field.value,
+                                          reason.id,
+                                        ])
                                       : field.onChange(
                                           field.value?.filter(
                                             (value) => value !== reason.id
                                           )
-                                        )
+                                        );
                                   }}
                                   className="border-primary data-[state=checked]:border-primary"
                                 />
@@ -234,7 +301,7 @@ export function JoinDialog() {
                                 {reason.label}
                               </FormLabel>
                             </FormItem>
-                          )
+                          );
                         }}
                       />
                     ))}
@@ -249,7 +316,9 @@ export function JoinDialog() {
               name="interests"
               render={() => (
                 <FormItem>
-                  <FormLabel className="text-foreground font-bold">what gets you hyped? (pick up to 3)</FormLabel>
+                  <FormLabel className="text-foreground font-bold">
+                    what gets you hyped? (pick up to 3)
+                  </FormLabel>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     {interestsOptions.map((interest) => (
                       <FormField
@@ -270,12 +339,15 @@ export function JoinDialog() {
                                       return;
                                     }
                                     return checked
-                                      ? field.onChange([...field.value, interest.id])
+                                      ? field.onChange([
+                                          ...field.value,
+                                          interest.id,
+                                        ])
                                       : field.onChange(
                                           field.value?.filter(
                                             (value) => value !== interest.id
                                           )
-                                        )
+                                        );
                                   }}
                                   className="border-primary data-[state=checked]:border-primary"
                                 />
@@ -284,7 +356,7 @@ export function JoinDialog() {
                                 {interest.label}
                               </FormLabel>
                             </FormItem>
-                          )
+                          );
                         }}
                       />
                     ))}
@@ -299,8 +371,13 @@ export function JoinDialog() {
               name="skillLevel"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-foreground font-bold">what's your skill level?</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormLabel className="text-foreground font-bold">
+                    what's your skill level?
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="select your skill level" />
@@ -324,8 +401,13 @@ export function JoinDialog() {
               name="discovery"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-foreground font-bold">how did you find us?</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <FormLabel className="text-foreground font-bold">
+                    how did you find us?
+                  </FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="select how you found us" />
@@ -350,7 +432,9 @@ export function JoinDialog() {
                 name="discoveryOther"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-foreground font-bold">please specify</FormLabel>
+                    <FormLabel className="text-foreground font-bold">
+                      please specify
+                    </FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
@@ -365,9 +449,11 @@ export function JoinDialog() {
               name="expectations"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-foreground font-bold">what are you looking to get out of this community?</FormLabel>
+                  <FormLabel className="text-foreground font-bold">
+                    what are you looking to get out of this community?
+                  </FormLabel>
                   <FormControl>
-                    <Textarea 
+                    <Textarea
                       placeholder="tell us what you hope to achieve..."
                       className="min-h-[100px]"
                       {...field}
@@ -378,8 +464,8 @@ export function JoinDialog() {
               )}
             />
 
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full bg-neon-blue hover:bg-neon-blue/80 text-black font-bold transition-all duration-300 hover:scale-105"
             >
               submit application
