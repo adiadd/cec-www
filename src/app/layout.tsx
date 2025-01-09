@@ -5,8 +5,8 @@ import "../index.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Cracked Coders Club",
-  description: "A community of exceptional developers",
+  title: "cracked engineers club",
+  description: "humans doing cool shit",
 };
 
 export default function RootLayout({
