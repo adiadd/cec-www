@@ -68,7 +68,7 @@ const discoveryOptions = [
 
 const formSchema = z.object({
   email: z.string().email("please enter a valid email"),
-  twitter: z.string().min(1, "please enter your twitter/x handle"),
+  twitter: z.string().optional(),
   website: z
     .string()
     .transform((value) => {
@@ -140,9 +140,11 @@ export function JoinDialog() {
       // Clean up the data
       const cleanedData = {
         ...parsedData,
-        twitter: parsedData.twitter.startsWith("@")
-          ? parsedData.twitter
-          : `@${parsedData.twitter}`,
+        twitter: parsedData.twitter
+          ? parsedData.twitter.startsWith("@")
+            ? parsedData.twitter
+            : `@${parsedData.twitter}`
+          : null,
         website: parsedData.website || null, // Convert empty string to null
       };
 
@@ -199,7 +201,7 @@ export function JoinDialog() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-foreground font-bold">
-                    email
+                    email *
                   </FormLabel>
                   <FormControl>
                     <Input placeholder="your@email.com" {...field} />
@@ -215,10 +217,15 @@ export function JoinDialog() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-foreground font-bold">
-                    twitter/x handle
+                    twitter/x handle (recommended)
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="@username" {...field} />
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                        @
+                      </span>
+                      <Input className="pl-7" placeholder="handle" {...field} />
+                    </div>
                   </FormControl>
                   <FormMessage className="text-destructive" />
                 </FormItem>
@@ -231,10 +238,10 @@ export function JoinDialog() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-foreground font-bold">
-                    portfolio website (optional)
+                    portfolio website
                   </FormLabel>
                   <FormControl>
-                    <Input placeholder="https://your-site.com" {...field} />
+                    <Input placeholder="your-site.com" {...field} />
                   </FormControl>
                   <FormMessage className="text-destructive" />
                 </FormItem>
@@ -247,7 +254,7 @@ export function JoinDialog() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-foreground font-bold">
-                    why do you want to be a part of this?
+                    why do you want to be a part of this? *
                   </FormLabel>
                   <FormControl>
                     <Textarea
@@ -267,7 +274,7 @@ export function JoinDialog() {
               render={() => (
                 <FormItem>
                   <FormLabel className="text-foreground font-bold">
-                    why are you here? (check all that apply)
+                    why are you here? (check all that apply) *
                   </FormLabel>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     {reasonsOptions.map((reason) => (
@@ -319,7 +326,7 @@ export function JoinDialog() {
               render={() => (
                 <FormItem>
                   <FormLabel className="text-foreground font-bold">
-                    what gets you hyped? (pick up to 3)
+                    what gets you hyped? (pick up to 3) *
                   </FormLabel>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     {interestsOptions.map((interest) => (
@@ -374,7 +381,7 @@ export function JoinDialog() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-foreground font-bold">
-                    what&apos;s your skill level?
+                    what&apos;s your skill level? *
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
@@ -404,7 +411,7 @@ export function JoinDialog() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-foreground font-bold">
-                    how did you find us?
+                    how did you find us? *
                   </FormLabel>
                   <Select
                     onValueChange={field.onChange}
@@ -452,11 +459,11 @@ export function JoinDialog() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel className="text-foreground font-bold">
-                    what are you looking to get out of this community?
+                    what are you looking to get out of this community? *
                   </FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="tell us what you hope to achieve..."
+                      placeholder="e.g., i want to level up my skills or i'm here to connect with people who love building"
                       className="min-h-[100px]"
                       {...field}
                     />
