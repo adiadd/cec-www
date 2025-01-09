@@ -1,5 +1,5 @@
-import { JoinDialog } from "@/components/JoinDialog";
 import { Globe } from "@/components/globe";
+import { JoinDialog } from "@/components/join-dialog";
 
 const Index = () => {
   return (
