@@ -139,54 +139,58 @@ export function JoinDialog() {
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            {/* Email Field */}
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>email</FormLabel>
+                  <FormLabel className="text-foreground">email</FormLabel>
                   <FormControl>
                     <Input placeholder="your@email.com" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-destructive" />
                 </FormItem>
               )}
             />
             
+            {/* Twitter Field */}
             <FormField
               control={form.control}
               name="twitter"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>twitter/x handle (optional)</FormLabel>
+                  <FormLabel className="text-foreground">twitter/x handle</FormLabel>
                   <FormControl>
                     <Input placeholder="@username" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-destructive" />
                 </FormItem>
               )}
             />
 
+            {/* Website Field */}
             <FormField
               control={form.control}
               name="website"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>portfolio website (optional)</FormLabel>
+                  <FormLabel className="text-foreground">portfolio website (optional)</FormLabel>
                   <FormControl>
                     <Input placeholder="https://your-site.com" {...field} />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-destructive" />
                 </FormItem>
               )}
             />
 
+            {/* Why Field */}
             <FormField
               control={form.control}
               name="why"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>why do you want to be a part of this?</FormLabel>
+                  <FormLabel className="text-foreground">why do you want to be a part of this?</FormLabel>
                   <FormControl>
                     <Textarea 
                       placeholder="tell us your story..."
@@ -194,17 +198,18 @@ export function JoinDialog() {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-destructive" />
                 </FormItem>
               )}
             />
 
+            {/* Reasons Field */}
             <FormField
               control={form.control}
               name="reasons"
               render={() => (
                 <FormItem>
-                  <FormLabel>why are you here? (check all that apply)</FormLabel>
+                  <FormLabel className="text-foreground">why are you here? (check all that apply)</FormLabel>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     {reasonsOptions.map((reason) => (
                       <FormField
@@ -246,12 +251,13 @@ export function JoinDialog() {
               )}
             />
 
+            {/* Interests Field */}
             <FormField
               control={form.control}
               name="interests"
               render={() => (
                 <FormItem>
-                  <FormLabel>what gets you hyped? (pick up to 3)</FormLabel>
+                  <FormLabel className="text-foreground">what gets you hyped? (pick up to 3)</FormLabel>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                     {interestsOptions.map((interest) => (
                       <FormField
@@ -296,12 +302,13 @@ export function JoinDialog() {
               )}
             />
 
+            {/* Skill Level Field */}
             <FormField
               control={form.control}
               name="skillLevel"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>what's your skill level?</FormLabel>
+                  <FormLabel className="text-foreground">what's your skill level?</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -316,17 +323,18 @@ export function JoinDialog() {
                       ))}
                     </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormMessage className="text-destructive" />
                 </FormItem>
               )}
             />
 
+            {/* Discovery Field */}
             <FormField
               control={form.control}
               name="discovery"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>how did you find us?</FormLabel>
+                  <FormLabel className="text-foreground">how did you find us?</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
@@ -341,33 +349,35 @@ export function JoinDialog() {
                       ))}
                     </SelectContent>
                   </Select>
-                  <FormMessage />
+                  <FormMessage className="text-destructive" />
                 </FormItem>
               )}
             />
 
+            {/* Discovery Other Field */}
             {form.watch("discovery") === "other" && (
               <FormField
                 control={form.control}
                 name="discoveryOther"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>please specify</FormLabel>
+                    <FormLabel className="text-foreground">please specify</FormLabel>
                     <FormControl>
                       <Input {...field} />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-destructive" />
                   </FormItem>
                 )}
               />
             )}
 
+            {/* Expectations Field */}
             <FormField
               control={form.control}
               name="expectations"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>what are you looking to get out of this community?</FormLabel>
+                  <FormLabel className="text-foreground">what are you looking to get out of this community?</FormLabel>
                   <FormControl>
                     <Textarea 
                       placeholder="tell us what you hope to achieve..."
@@ -375,7 +385,7 @@ export function JoinDialog() {
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage className="text-destructive" />
                 </FormItem>
               )}
             />
