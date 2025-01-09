@@ -1,69 +1,66 @@
-# Welcome to your Lovable project
+# cec-www
 
-## Project info
+The official landing page for **crackedengineers.club**. Built for the cracked, the curious, and the building-loving engineers of the world.
 
-**URL**: https://lovable.dev/projects/bafcec26-22e4-4e7a-b11f-aa9eb340d388
+## tech stack
 
-## How can I edit this code?
+- **framework**: next.js
+- **styling**: tailwindcss
+- **components**: shadcn/ui
+- **form handling**: react-hook-form + zod
+- **deployment**: vercel
 
-There are several ways of editing your application.
+## getting started
 
-**Use Lovable**
+1. clone the repo:
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/bafcec26-22e4-4e7a-b11f-aa9eb340d388) and start prompting.
+   ```bash
+   git clone git@github.com:adiadd/cec-www.git
+   ```
 
-Changes made via Lovable will be committed automatically to this repo.
+2. install dependencies:
 
-**Use your preferred IDE**
+   ```bash
+   cd cec-www
+   bun install
+   ```
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+3. run the dev server:
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+   ```bash
+   bun run dev
+   ```
 
-Follow these steps:
+4. open your browser and go to `http://localhost:3000`.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## contributing
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+1. fork the repo
+2. create a new branch following conventional commits:
+   ```bash
+   git checkout -b feat/your-feature-name
+   # or
+   git checkout -b fix/bug-description
+   ```
+3. make your changes
+4. commit using conventional commits:
+   ```bash
+   git commit -m "feat: add new feature"
+   # or
+   git commit -m "fix: resolve bug in component"
+   ```
+5. push your changes:
+   ```bash
+   git push origin feat/your-feature-name
+   ```
+6. open a pull request
 
-# Step 3: Install the necessary dependencies.
-npm i
+## deployment
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+the site is automatically deployed to vercel on every push to `main`.
 
-**Edit a file directly in GitHub**
+## license
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+mit license. do whatever you want, just give credit.
 
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with .
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/bafcec26-22e4-4e7a-b11f-aa9eb340d388) and click on Share -> Publish.
-
-## I want to use a custom domain - is that possible?
-
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+made with 🛠️ by the cracked engineers club
