@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 
 export const Globe = () => {
@@ -9,9 +9,14 @@ export const Globe = () => {
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
   const brainRef = useRef<THREE.Mesh | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!containerRef.current || !isMounted) return;
 
     const container = containerRef.current;
 
@@ -90,12 +95,13 @@ export const Globe = () => {
         container.removeChild(rendererRef.current.domElement);
       }
     };
-  }, []);
+  }, [isMounted]);
 
   return (
     <div
       ref={containerRef}
       className="brain-container w-full h-[300px] md:h-[400px] flex items-center justify-center"
+      style={{ visibility: isMounted ? "visible" : "hidden" }}
     />
   );
 };
